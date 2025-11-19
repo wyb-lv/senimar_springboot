@@ -10,6 +10,7 @@
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
           integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <title>Admin Login</title>
     <style>
         body {
@@ -48,23 +49,33 @@
 <div class="login-container p-4">
     <div class="jumbotron border p-4">
         <h2 class="text-center">Admin Login</h2>
-        <form action="/admin/loginvalidate" method="post">
-            <div class="form-group">
-                <label for="username">Username:</label>
+
+        <!-- Error message -->
+        <div th:if="${param.error}" class="alert alert-danger" role="alert">
+            Invalid email or password. Please try again.
+        </div>
+
+        <!-- Logout message -->
+        <div th:if="${param.logout}" class="alert alert-success" role="alert">
+            You have been logged out successfully.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="form-group mb-3">
+                <label for="email">Email:</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-account"></i></span>
-                    <input type="text" name="username" id="username" placeholder="Admin username" required class="form-control form-control-lg">
+                    <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                    <input type="text" name="email" id="email" placeholder="Admin email" required class="form-control form-control-lg">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="password">Password:</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
                     <input type="password" class="form-control form-control-lg" placeholder="Admin Password" required name="password" id="password">
                 </div>
             </div>
-            <input type="submit" value="Login" class="btn btn-primary btn-block mt-4">
-            <h3 class="text-center text-danger mt-3" th:text="${msg}" th:if="${msg}"></h3>
+            <input type="submit" value="Login" class="btn btn-primary w-100 mt-3">
         </form>
     </div>
 </div>

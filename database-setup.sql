@@ -42,8 +42,7 @@ GO
 IF NOT EXISTS (SELECT * FROM ACCOUNT WHERE username = 'admin')
 BEGIN
     INSERT INTO ACCOUNT (username, email, password, role, address) VALUES
-    ('admin', 'admin@senimar.com', 'admin123', 'ADMIN', '123 Admin Street, City'),
-    ('john_doe', 'john@example.com', 'password123', 'CUSTOMER', '456 Customer Ave, Town'),
+    ('john_doe', 'john@example.com', 'password123', 'ROLE_NORMAL', '456 Customer Ave, Town'),
     ('jane_smith', 'jane@example.com', 'password123', 'CUSTOMER', '789 Account Road, Village'),
     ('bob_wilson', 'bob@example.com', 'password123', 'CUSTOMER', '321 Buyer Lane, City'),
     ('alice_brown', 'alice@example.com', 'password123', 'CUSTOMER', NULL);

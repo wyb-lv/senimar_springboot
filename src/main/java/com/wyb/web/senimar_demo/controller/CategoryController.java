@@ -35,15 +35,32 @@ public class CategoryController {
     public String addCategory(@RequestParam("categoryname") String categoryName,
                               RedirectAttributes redirectAttributes) {
         try {
+            // Trim whitespace
+            categoryName = categoryName.trim();
+
+            // Validate category name is not empty
+            if (categoryName.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Category name cannot be empty!");
+                return "redirect:/admin/categories";
+            }
+
             // Check if category already exists
             if (categoryService.categoryExistsByName(categoryName)) {
                 redirectAttributes.addFlashAttribute("error", "Category already exists!");
                 return "redirect:/admin/categories";
             }
 
+            // Validate pattern: Each word must start with a capital letter, contain only letters
+            String pattern = "^(\\p{Lu}\\p{Ll}+)(\\s\\p{Lu}\\p{Ll}+)*$";
+            if (!categoryName.matches(pattern)) {
+                redirectAttributes.addFlashAttribute("error",
+                    "Each word must start with a capital letter, contain only letters (Unicode), no numbers or special characters, and no extra whitespace");
+                return "redirect:/admin/categories";
+            }
+
             Category category = new Category(categoryName);
             categoryService.saveCategory(category);
-            
+
             redirectAttributes.addFlashAttribute("success", "Category added successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to add category: " + e.getMessage());
@@ -59,6 +76,23 @@ public class CategoryController {
                                  @RequestParam("categoryname") String categoryName,
                                  RedirectAttributes redirectAttributes) {
         try {
+            // Trim whitespace
+            categoryName = categoryName.trim();
+
+            // Validate category name is not empty
+            if (categoryName.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Category name cannot be empty!");
+                return "redirect:/admin/categories";
+            }
+
+            // Validate pattern: Each word must start with a capital letter, contain only letters
+            String pattern = "^(\\p{Lu}\\p{Ll}+)(\\s\\p{Lu}\\p{Ll}+)*$";
+            if (!categoryName.matches(pattern)) {
+                redirectAttributes.addFlashAttribute("error",
+                    "Each word must start with a capital letter, contain only letters (Unicode), no numbers or special characters, and no extra whitespace");
+                return "redirect:/admin/categories";
+            }
+
             categoryService.updateCategory(categoryId, categoryName);
             redirectAttributes.addFlashAttribute("success", "Category updated successfully!");
         } catch (Exception e) {
@@ -97,15 +131,5 @@ public class CategoryController {
             model.addAttribute("categories", categories);
         }
         return "categories";
-    }
-
-    /**
-     * Get category by ID (REST endpoint for AJAX)
-     */
-    @GetMapping("/categories/{id}")
-    @ResponseBody
-    public Category getCategoryById(@PathVariable Long id) {
-        Optional<Category> category = categoryService.getCategoryById(id);
-        return category.orElse(null);
     }
 }

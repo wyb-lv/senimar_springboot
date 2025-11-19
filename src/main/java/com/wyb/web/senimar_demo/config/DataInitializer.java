@@ -8,6 +8,7 @@ import com.wyb.web.senimar_demo.services.ProductService;
 import com.wyb.web.senimar_demo.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,6 +24,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,24 +44,25 @@ public class DataInitializer implements CommandLineRunner {
         }
         // Insert Accounts only if they don't exist
         if (!accountService.usernameExists("admin")) {
-            accountService.saveAccount(new Account(
+            Account admin = new Account(
                     "admin",
                     "admin@nyan.cat",
-                    "123",
+                    passwordEncoder.encode("123"),
                     "ROLE_ADMIN",
                     "123, Albany Street"
-            ));
+            );
+            accountService.saveAccount(admin);
         }
 
         if (!accountService.usernameExists("lisa")) {
-            accountService.saveAccount(new Account(
+            Account lisa = new Account(
                     "lisa",
                     "lisa@gmail.com",
-                    "765",
+                    passwordEncoder.encode("765"),
                     "ROLE_NORMAL",
                     "765, 5th Avenue"
-            ));
-
+            );
+            accountService.saveAccount(lisa);
         }
 
         // Insert Products only if they don't exist

@@ -21,7 +21,7 @@ public class AccountController {
     /**
      * Display all customers
      */
-    @GetMapping("/customers")
+    @GetMapping("/accounts")
     public String showCustomers(Model model) {
         List<Account> accounts = accountService.getAllAccounts();
         model.addAttribute("accounts", accounts);
@@ -31,7 +31,7 @@ public class AccountController {
     /**
      * Delete customer
      */
-    @GetMapping("/customers/delete")
+    @GetMapping("/accounts/delete")
     public String deleteCustomer(@RequestParam("id") Long id,
                                  RedirectAttributes redirectAttributes) {
         try {
@@ -40,13 +40,13 @@ public class AccountController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to delete customer: " + e.getMessage());
         }
-        return "redirect:/admin/customers";
+        return "redirect:/admin/accounts";
     }
 
     /**
      * Find user by name
      */
-    @PostMapping("/customers/search")
+    @PostMapping("/accounts/search")
     public String searchCustomers(@RequestParam(value = "name",required = false, defaultValue = "") String name,
                                  Model model) {
         if (!name.equals("")){

@@ -1,6 +1,7 @@
 package com.wyb.web.senimar_demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "PRODUCT")
@@ -11,6 +12,12 @@ public class Product {
 	private Long id;
 
 	@Column(name = "name", columnDefinition = "NVARCHAR(255)")
+	@NotBlank(message = "Name is required!")  //validation từ form  nhập đưa lên
+	@Size(min = 5, max = 50, message = "Name length must be between 5...50 characters")
+	@Pattern(
+			regexp = "^(\\p{Lu}\\p{Ll}+)(\\s\\p{Lu}\\p{Ll}+)*$",
+			message = "Each word must start with a capital letter, contain only letters (Unicode), no numbers or special characters, and no extra whitespace"
+	)
 	private String name;
 
 	@Column(name = "image_url")
@@ -20,16 +27,25 @@ public class Product {
 	@JoinColumn(name = "category_id", referencedColumnName = "id")
 	private Category category;
 
+	@NotBlank(message = "Quantity is required!")
 	@Column(name = "quantity")
 	private Integer quantity;
 
 	@Column(name = "price")
+	@NotBlank(message = "Price is required!")
 	private Integer price;
 
 	@Column(name = "weight")
+	@NotBlank(message = "Weight is required!")
 	private Integer weight;
 
 	@Column(name = "description", columnDefinition = "NVARCHAR(255)")
+	@NotBlank(message = "Quantity is required!")
+	@Size(min = 5, max = 250, message = "Name length must be between 5...250 characters")
+	@Pattern(
+			regexp = "^(\\p{Lu}\\p{Ll}+)(\\s\\p{Lu}\\p{Ll}+)*$",
+			message = "Each word must start with a capital letter, contain only letters (Unicode), no numbers or special characters, and no extra whitespace"
+	)
 	private String description;
 
 	public Product() {}
